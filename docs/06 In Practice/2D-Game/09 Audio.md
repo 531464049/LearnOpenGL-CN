@@ -38,7 +38,7 @@ IrrKlang是一个易于使用的音频库，只需几行代码便可播放大多
 
 <audio src="https://learnopengl.com/audio/in-practice/breakout/breakout.mp3" controls="controls"></audio>
 
-利用irrKlang库将其添加到Breakout游戏里非常简单。我们引入相应的头文件，创建<fun>irrKlang::ISoundEngine</fun>，用<fun>createIrrKlangDevice</fun>初始化它并使用这个引擎加载、播放音频：
+利用irrKlang库将其添加到Breakout游戏里非常简单。我们引入相应的头文件，创建 irrKlang::ISoundEngine ，用 createIrrKlangDevice 初始化它并使用这个引擎加载、播放音频：
 
 ```c++
 #include <irrklang/irrKlang.h>
@@ -53,7 +53,7 @@ void Game::Init()
 }
 ```
 
-在这里，我们创建了一个<fun>SoundEngine</fun>，用于管理所有与音频相关的代码。一旦我们初始化了引擎，便可以调用<fun>play2D</fun>函数播放音频。第一个参数为文件名，第二个参数为是否循环播放。
+在这里，我们创建了一个 SoundEngine ，用于管理所有与音频相关的代码。一旦我们初始化了引擎，便可以调用 play2D 函数播放音频。第一个参数为文件名，第二个参数为是否循环播放。
 
 这就是全部了！现在运行游戏会使你的耳机或扬声器迸发出声波。
 

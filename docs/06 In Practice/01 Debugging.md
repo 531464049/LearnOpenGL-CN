@@ -12,17 +12,17 @@
 
 ## glGetError()
 
-当你不正确使用OpenGL的时候（比如说在绑定之前配置一个缓冲），它会检测到，并在幕后生成一个或多个用户错误标记。我们可以使用一个叫做<fun>glGetError</fun>的函数查询这些错误标记，他会检测错误标记集，并且在OpenGL确实出错的时候返回一个错误值。
+当你不正确使用OpenGL的时候（比如说在绑定之前配置一个缓冲），它会检测到，并在幕后生成一个或多个用户错误标记。我们可以使用一个叫做 glGetError 的函数查询这些错误标记，他会检测错误标记集，并且在OpenGL确实出错的时候返回一个错误值。
 
 ```c++
 GLenum glGetError();
 ```
 
-当<fun>glGetError</fun>被调用时，它要么会返回错误标记之一，要么返回无错误。<fun>glGetError</fun>会返回的错误值如下：
+当 glGetError 被调用时，它要么会返回错误标记之一，要么返回无错误。 glGetError 会返回的错误值如下：
 
 | 标记 | 代码 | 描述 |
 | :------: | :------: | :------: |
-| GL_NO_ERROR | 0 | 自上次调用<fun>glGetError</fun>以来没有错误 |
+| GL_NO_ERROR | 0 | 自上次调用 glGetError 以来没有错误 |
 | GL_INVALID_ENUM | 1280 | 枚举参数不合法 |
 | GL_INVALID_VALUE | 1281 | 值参数不合法 |
 | GL_INVALID_OPERATION | 1282 | 一个指令的状态对指令的参数不合法 |
@@ -33,11 +33,11 @@ GLenum glGetError();
 
 在OpenGL的函数文档中你可以找到函数在错误时生成的错误代码。比如说，如果你看一下[glBindTexture](http://docs.gl/gl3/glBindTexture)函数的文档，在 *Errors* 部分中你可以看到它可能生成的所有用户错误代码。
 
-当一个错误标记被返回的时候，将不会报告其它的错误标记。换句话说，当<fun>glGetError</fun>被调用的时候，它会清除所有的错误标记（在分布式系统上只会清除一个，见下面的注释）。这也就是说如果你在每一帧之后调用<fun>glGetError</fun>一次，它返回一个错误，但你不能确定这就是唯一的错误，并且错误的来源可能在这一帧的任意地方。
+当一个错误标记被返回的时候，将不会报告其它的错误标记。换句话说，当 glGetError 被调用的时候，它会清除所有的错误标记（在分布式系统上只会清除一个，见下面的注释）。这也就是说如果你在每一帧之后调用 glGetError 一次，它返回一个错误，但你不能确定这就是唯一的错误，并且错误的来源可能在这一帧的任意地方。
 
 !!! important
 
-    注意当OpenGL是分布式(Distributely)运行的时候，如在X11系统上，其它的用户错误代码仍然可以被生成，只要它们有着不同的错误代码。调用<fun>glGetError</fun>只会重置一个错误代码标记，而不是所有。由于这一点，我们通常会建议在一个循环中调用<fun>glGetError</fun>。
+    注意当OpenGL是分布式(Distributely)运行的时候，如在X11系统上，其它的用户错误代码仍然可以被生成，只要它们有着不同的错误代码。调用 glGetError 只会重置一个错误代码标记，而不是所有。由于这一点，我们通常会建议在一个循环中调用 glGetError 。
 
 ```c++
 glBindTexture(GL_TEXTURE_2D, tex);
@@ -52,9 +52,9 @@ std::cout << glGetError() << std::endl; // 返回 1281 (非法值)
 std::cout << glGetError() << std::endl; // 返回 0 (无错误)
 ```
 
-<fun>glGetError</fun>非常棒的一点就是它能够非常简单地定位错误可能的来源，并且验证OpenGL使用的正确性。比如说你获得了一个黑屏的结果但是不知道什么造成了它：是不是帧缓冲设置错误？是不是我忘记绑定纹理了？通过在代码中各处调用<fun>glGetError</fun>，你可以非常快速地查明OpenGL错误开始出现的位置，这也就意味着这次调用之前的代码中哪里出错了。
+ glGetError 非常棒的一点就是它能够非常简单地定位错误可能的来源，并且验证OpenGL使用的正确性。比如说你获得了一个黑屏的结果但是不知道什么造成了它：是不是帧缓冲设置错误？是不是我忘记绑定纹理了？通过在代码中各处调用 glGetError ，你可以非常快速地查明OpenGL错误开始出现的位置，这也就意味着这次调用之前的代码中哪里出错了。
 
-默认情况下<fun>glGetError</fun>只会打印错误数字，如果你不去记忆的话会非常难以理解。通常我们会写一个助手函数来简便地打印出错误字符串以及错误检测函数调用的位置。
+默认情况下 glGetError 只会打印错误数字，如果你不去记忆的话会非常难以理解。通常我们会写一个助手函数来简便地打印出错误字符串以及错误检测函数调用的位置。
 
 ```c++
 GLenum glCheckError_(const char *file, int line)
@@ -80,7 +80,7 @@ GLenum glCheckError_(const char *file, int line)
 #define glCheckError() glCheckError_(__FILE__, __LINE__) 
 ```
 
-防止你不知道`__FILE__`和`__LINE__`这两个预处理指令(Preprocessor Directive)是什么，它们会在编译的时候被替换成编译时对应的文件与行号。如果我们坚持在代码中使用大量<fun>glGetError</fun>的调用，这就会让我们更加准确地知道哪个<fun>glGetError</fun>调用返回了错误（译注：记得<fun>glGetError</fun>显示的错误会发生在该次调用与上次调用之间，如果间隔太大的话需要检查的地方就太多了）。
+防止你不知道`__FILE__`和`__LINE__`这两个预处理指令(Preprocessor Directive)是什么，它们会在编译的时候被替换成编译时对应的文件与行号。如果我们坚持在代码中使用大量 glGetError 的调用，这就会让我们更加准确地知道哪个 glGetError 调用返回了错误（译注：记得 glGetError 显示的错误会发生在该次调用与上次调用之间，如果间隔太大的话需要检查的地方就太多了）。
 
 ```c++
 glBindBuffer(GL_VERTEX_ARRAY, vbo);
@@ -91,18 +91,18 @@ glCheckError();
 
 ![](../img/06/01/debugging_glgeterror.png)
 
-还有一个**重要的**事情需要知道，GLEW有一个历史悠久的bug，调用<fun>glewInit()</fun>会设置一个<var>GL_INVALID_ENUM</var>的错误标记，所以第一次调用的<fun>glGetError</fun>永远会猝不及防地给你返回一个错误代码。如果要修复这个bug，我们建议您在调用<fun>glewInit</fun>之后立即调用<fun>glGetError</fun>消除这个标记：
+还有一个**重要的**事情需要知道，GLEW有一个历史悠久的bug，调用 glewInit() 会设置一个 GL_INVALID_ENUM 的错误标记，所以第一次调用的 glGetError 永远会猝不及防地给你返回一个错误代码。如果要修复这个bug，我们建议您在调用 glewInit 之后立即调用 glGetError 消除这个标记：
 
 ```c++
 glewInit();
 glGetError();
 ```
 
-<fun>glGetError</fun>并不能帮助你很多，因为它返回的信息非常简单，但不可否认它经常能帮助你检查笔误或者快速定位错误来源。总而言之，是一个非常简单但有效的工具。
+ glGetError 并不能帮助你很多，因为它返回的信息非常简单，但不可否认它经常能帮助你检查笔误或者快速定位错误来源。总而言之，是一个非常简单但有效的工具。
 
 ## 调试输出
 
-虽然没有<fun>glGetError</fun>普遍，但一个叫做<def>调试输出</def>(Debug Output)的OpenGL拓展是一个非常有用的工具，它在4.3版本之后变为了核心OpenGL的一部分。通过使用调试输出拓展，OpenGL自身会直接发送一个比起<fun>glGetError</fun>更为完善的错误或警告信息给用户。它不仅提供了更多的信息，也能够帮助你使用调试器(Debugger)捕捉错误源头。
+虽然没有 glGetError 普遍，但一个叫做调试输出(Debug Output)的OpenGL拓展是一个非常有用的工具，它在4.3版本之后变为了核心OpenGL的一部分。通过使用调试输出拓展，OpenGL自身会直接发送一个比起 glGetError 更为完善的错误或警告信息给用户。它不仅提供了更多的信息，也能够帮助你使用调试器(Debugger)捕捉错误源头。
 
 !!! important
 
@@ -112,7 +112,7 @@ glGetError();
 
 ### GLFW中的调试输出
 
-在GLFW中请求一个调试输出非常简单，我们只需要传递一个提醒到GLFW中，告诉它我们需要一个调试输出上下文即可。我们需要在调用<fun>glfwCreateWindow</fun>之前完成这一请求。
+在GLFW中请求一个调试输出非常简单，我们只需要传递一个提醒到GLFW中，告诉它我们需要一个调试输出上下文即可。我们需要在调用 glfwCreateWindow 之前完成这一请求。
 
 ```c++
 glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, GL_TRUE);
@@ -198,7 +198,7 @@ void APIENTRY glDebugOutput(GLenum source,
 
 ### 过滤调试输出
 
-有了<fun>glDebugMessageControl</fun>，你可以潜在地过滤出你需要的错误类型。在这里我们不打算过滤任何来源，类型或者严重等级。如果我们仅希望显示OpenGL API的高严重等级错误消息，你可以设置为以下这样：
+有了 glDebugMessageControl ，你可以潜在地过滤出你需要的错误类型。在这里我们不打算过滤任何来源，类型或者严重等级。如果我们仅希望显示OpenGL API的高严重等级错误消息，你可以设置为以下这样：
 
 ```c++
 glDebugMessageControl(GL_DEBUG_SOURCE_API, 
@@ -213,7 +213,7 @@ glDebugMessageControl(GL_DEBUG_SOURCE_API,
 
 ### 回溯调试错误源
 
-使用调试输出另一个很棒的技巧就是你可以很容易找出错误发生的准确行号或者调用。通过在<fun>DebugOutput</fun>中特定的错误类型上（或者在函数的顶部，如果你不关心类型的话）设置一个断点，调试器将会捕捉到抛出的错误，你可以往上查找调用栈直到找到消息发出的源头。
+使用调试输出另一个很棒的技巧就是你可以很容易找出错误发生的准确行号或者调用。通过在 DebugOutput 中特定的错误类型上（或者在函数的顶部，如果你不关心类型的话）设置一个断点，调试器将会捕捉到抛出的错误，你可以往上查找调用栈直到找到消息发出的源头。
 
 ![](../img/06/01/debugging_debug_output_breakpoint.png)
 
@@ -221,7 +221,7 @@ glDebugMessageControl(GL_DEBUG_SOURCE_API,
 
 ### 自定义错误输出
 
-除了仅仅是阅读信息，我们也可以使用<fun>glDebugMessageInsert</fun>将信息推送到调试输出系统：
+除了仅仅是阅读信息，我们也可以使用 glDebugMessageInsert 将信息推送到调试输出系统：
 
 ```c++
 glDebugMessageInsert(GL_DEBUG_SOURCE_APPLICATION, GL_DEBUG_TYPE_ERROR, 0,                       
@@ -230,11 +230,11 @@ glDebugMessageInsert(GL_DEBUG_SOURCE_APPLICATION, GL_DEBUG_TYPE_ERROR, 0,
 
 如果你正在利用其它使用调试输出上下文的程序或OpenGL代码进行开发，这会非常有用。其它的开发者能快速了解你自定义OpenGL代码中任何**报告出来的**Bug。
 
-总而言之，调试输出（如果你能使用它）对与快速捕捉错误是非常有用的，完全值得你花一点时间来配置，它能够省下你非常多的开发时间。你可以在[这里](http://learnopengl.com/code_viewer_gh.php?code=src/6.in_practice/1.debugging/debugging.cpp)找到源码，里面<fun>glGetError</fun>和调试输出上下文都有配置；看看你是否能够修复所有的错误。
+总而言之，调试输出（如果你能使用它）对与快速捕捉错误是非常有用的，完全值得你花一点时间来配置，它能够省下你非常多的开发时间。你可以在[这里](http://learnopengl.com/code_viewer_gh.php?code=src/6.in_practice/1.debugging/debugging.cpp)找到源码，里面 glGetError 和调试输出上下文都有配置；看看你是否能够修复所有的错误。
 
 ## 调试着色器输出
 
-对于GLSL来说，我们不能访问像是<fun>glGetError</fun>这样的函数，也不能通过步进的方式运行着色器代码。如果你得到一个黑屏或者完全错误的视觉效果，通常想要知道着色器代码是否有误会非常困难。是的，我们是有编译错误报告来报告语法错误，但是捕捉语义错误又是一大难题。
+对于GLSL来说，我们不能访问像是 glGetError 这样的函数，也不能通过步进的方式运行着色器代码。如果你得到一个黑屏或者完全错误的视觉效果，通常想要知道着色器代码是否有误会非常困难。是的，我们是有编译错误报告来报告语法错误，但是捕捉语义错误又是一大难题。
 
 一个经常使用的技巧就是将着色器程序中所有相关的变量直接发送到片段着色器的输出通道，以评估它们。通过直接输出着色器变量到输出颜色通道，我们通常可以通过观察视觉结果来获取有用的信息。比如说，如果我们想要检查一个模型的法向量是否正确，我们可以把它们（可以是变换过的也可以是没有变换过的）从顶点着色器传递到片段着色器中，在片段着色器中我们会用以下这种方式输出法向量：
 
@@ -264,7 +264,7 @@ void main()
 
 每一个驱动都有它自己的怪癖。比如说NVIDIA驱动会更宽容一点，通常会忽略一些限制或者规范，而ATI/AMD驱动则通常会严格执行OpenGL规范（在我看来会更好一点）。问题是在一台机器上的着色器到另一台机器上可能就由于驱动差异不能正常工作了。
 
-通过多年的经验你会最终能够知道不同GPU供应商之间的细微差别，但如果你想要保证你的着色器代码在所有的机器上都能运行，你可以直接对着官方的标准使用OpenGL的GLSL[参考编译器](https://www.khronos.org/opengles/sdk/tools/Reference-Compiler/)（Reference Compiler）来检查。你可以从[这里](https://www.khronos.org/opengles/sdk/tools/Reference-Compiler/)下载所谓的<def>GLSL语言校验器</def>(GLSL Lang Validator)的可执行版本，或者从[这里](https://github.com/KhronosGroup/glslang)找到完整的源码。
+通过多年的经验你会最终能够知道不同GPU供应商之间的细微差别，但如果你想要保证你的着色器代码在所有的机器上都能运行，你可以直接对着官方的标准使用OpenGL的GLSL[参考编译器](https://www.khronos.org/opengles/sdk/tools/Reference-Compiler/)（Reference Compiler）来检查。你可以从[这里](https://www.khronos.org/opengles/sdk/tools/Reference-Compiler/)下载所谓的GLSL语言校验器(GLSL Lang Validator)的可执行版本，或者从[这里](https://github.com/KhronosGroup/glslang)找到完整的源码。
 
 有了这个GLSL语言校验器，你可以很方便的检查你的着色器代码，只需要把着色器文件作为程序的第一个参数即可。注意GLSL语言校验器是通过下列固定的后缀名来决定着色器的类型的：
 

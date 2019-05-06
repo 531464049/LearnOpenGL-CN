@@ -16,11 +16,11 @@ Breakout不会只是一个单一的绿色笑脸，而是一些由许多彩色砖
 
 我们创建一个被称为游戏对象的组件作为一个游戏内物体的基本表示。这样的游戏对象持有一些状态数据，如其位置、大小与速率。它还持有颜色、旋转、是否坚硬(不可被摧毁)、是否被摧毁的属性，除此之外，它还存储了一个Texture2D变量作为其精灵(Sprite)。
 
-游戏中的每个物体都可以被表示为<fun>GameObject</fun>或这个类的派生类，你可以在下面找到<fun>GameObject</fun>的代码：
+游戏中的每个物体都可以被表示为 GameObject 或这个类的派生类，你可以在下面找到 GameObject 的代码：
 
 - **GameObject**：[头文件](https://learnopengl.com/code_viewer.php?code=in-practice/breakout/game_object.h)，[代码](https://learnopengl.com/code_viewer.php?code=in-practice/breakout/game_object)
 
-Breakout中的关卡基本由砖块组成，因此我们可以用一个砖块的集合表示一个关卡。因为砖块需要和游戏对象几乎相同的状态，所以我们将关卡中的每个砖块表示为<fun>GameObject</fun>。<fun>GameLevel</fun>类的布局如下所示：
+Breakout中的关卡基本由砖块组成，因此我们可以用一个砖块的集合表示一个关卡。因为砖块需要和游戏对象几乎相同的状态，所以我们将关卡中的每个砖块表示为 GameObject 。 GameLevel 类的布局如下所示：
 
 ```c++
 class GameLevel
@@ -55,11 +55,11 @@ private:
 - 数字1：一个坚硬的砖块，不可被摧毁
 - 大于1的数字：一个可被摧毁的砖块，不同的数字区分砖块的颜色
 
-上面的示例关卡在被<fun>GameLevel</fun>处理后，看起来会像这样：
+上面的示例关卡在被 GameLevel 处理后，看起来会像这样：
 
 ![](../../img/06/Breakout/04/levels-example.png)
 
-<fun>GameLevel</fun>类使用两个函数从文件中生成一个关卡。它首先将所有数字在<fun>Load</fun>函数中加载到二维容器(vector)里，然后在<fun>init</fun>函数中处理这些数字，以创建所有的游戏对象。
+ GameLevel 类使用两个函数从文件中生成一个关卡。它首先将所有数字在 Load 函数中加载到二维容器(vector)里，然后在 init 函数中处理这些数字，以创建所有的游戏对象。
 
 ```c++
 void GameLevel::Load(const GLchar *file, GLuint levelWidth, GLuint levelHeight)
@@ -88,7 +88,7 @@ void GameLevel::Load(const GLchar *file, GLuint levelWidth, GLuint levelHeight)
 } 
 ```
 
-被加载后的<fun>tileData</fun>数据被传递到<fun>GameLevel</fun>的<fun>init</fun>函数：
+被加载后的 tileData 数据被传递到 GameLevel 的 init 函数：
 
 ```c++
 void GameLevel::init(std::vector<std::vector<GLuint>> tileData, GLuint lvlWidth, GLuint lvlHeight)
@@ -138,15 +138,15 @@ void GameLevel::init(std::vector<std::vector<GLuint>> tileData, GLuint lvlWidth,
 }
 ```
 
-<fun>init</fun>函数遍历每个被加载的数字，处理后将一个相应的<fun>GameObject</fun>添加到关卡的容器中。每个砖块的尺寸(unit_width和unit_height)根据砖块的总数被自动计算以便于每块砖可以完美地适合屏幕边界。
+ init 函数遍历每个被加载的数字，处理后将一个相应的 GameObject 添加到关卡的容器中。每个砖块的尺寸(unit_width和unit_height)根据砖块的总数被自动计算以便于每块砖可以完美地适合屏幕边界。
 
 在这里我们用两个新的纹理加载游戏对象，分别为[block](https://learnopengl.com/img/in-practice/breakout/textures/block.png)纹理与[solid block](https://learnopengl.com/img/in-practice/breakout/textures/block_solid.png)纹理。
 
 ![](../../img/06/Breakout/04/block-textures.png)
 
-这里有一个很好的小窍门，即这些纹理是完全灰度的。其效果是，我们可以在游戏代码中，通过将灰度值与定义好的颜色矢量相乘来巧妙地操纵它们的颜色，就如同我们在<fun>SpriteRenderer</fun>中所做的那样。这样一来，自定义的颜色/外观就不会显得怪异或不平衡。
+这里有一个很好的小窍门，即这些纹理是完全灰度的。其效果是，我们可以在游戏代码中，通过将灰度值与定义好的颜色矢量相乘来巧妙地操纵它们的颜色，就如同我们在 SpriteRenderer 中所做的那样。这样一来，自定义的颜色/外观就不会显得怪异或不平衡。
 
-<fun>GameLevel</fun>类还包含一些其他的功能，比如渲染所有未被破坏的砖块，或验证是否所有的可破坏砖块均被摧毁。你可以在下面找到<fun>GameLevel</fun>类的源码：
+ GameLevel 类还包含一些其他的功能，比如渲染所有未被破坏的砖块，或验证是否所有的可破坏砖块均被摧毁。你可以在下面找到 GameLevel 类的源码：
 
 - **GameLevel**：[头文件](https://learnopengl.com/code_viewer.php?code=in-practice/breakout/game_level.h)，[代码](https://learnopengl.com/code_viewer.php?code=in-practice/breakout/game_level)
 
@@ -154,7 +154,7 @@ void GameLevel::init(std::vector<std::vector<GLuint>> tileData, GLuint lvlWidth,
 
 ## 在游戏中
 
-我们希望在Breakout游戏中支持多个关卡，因此我们将在<fun>Game</fun>类中添加一个持有<fun>GameLevel</fun>变量的容器。同时我们还将存储当前的游戏关卡。
+我们希望在Breakout游戏中支持多个关卡，因此我们将在 Game 类中添加一个持有 GameLevel 变量的容器。同时我们还将存储当前的游戏关卡。
 
 ```c++
 class Game
@@ -173,7 +173,7 @@ class Game
 - [Space invader](https://learnopengl.com/code_viewer.php?code=in-practice/breakout/levels/three)
 - [Bounce galore](https://learnopengl.com/code_viewer.php?code=in-practice/breakout/levels/four)
 
-然后<fun>Game</fun>类的<fun>init</fun>函数初始化每个纹理和关卡：
+然后 Game 类的 init 函数初始化每个纹理和关卡：
 
 ```c++
 void Game::Init()
@@ -197,7 +197,7 @@ void Game::Init()
 }  
 ```
 
-现在剩下要做的就是通过调用当前关卡的<fun>Draw</fun>函数来渲染我们完成的关卡，然后使用给定的sprite渲染器调用每个<fun>GameObject</fun>的<fun>Draw</fun>函数。除了关卡之外，我们还会用一个很好的[背景图片](https://learnopengl.com/img/in-practice/breakout/textures/background.jpg)来渲染这个场景：
+现在剩下要做的就是通过调用当前关卡的 Draw 函数来渲染我们完成的关卡，然后使用给定的sprite渲染器调用每个 GameObject 的 Draw 函数。除了关卡之外，我们还会用一个很好的[背景图片](https://learnopengl.com/img/in-practice/breakout/textures/background.jpg)来渲染这个场景：
 
 ```c++
 void Game::Render()
@@ -224,7 +224,7 @@ void Game::Render()
 
 ![](../../img/06/Breakout/04/paddle.png)
 
-一个挡板对象拥有位置、大小、渲染纹理等属性，所以我们理所当然地将其定义为一个<fun>GameObject</fun>。
+一个挡板对象拥有位置、大小、渲染纹理等属性，所以我们理所当然地将其定义为一个 GameObject 。
 
 ```c++
 // 初始化挡板的大小
@@ -247,15 +247,15 @@ void Game::Init()
 }
 ```
 
-这里我们定义了几个常量来初始化挡板的大小与速率。在<fun>Game</fun>的<fun>Init</fun>函数中我们计算挡板的初始位置，使其中心与场景的水平中心对齐。
+这里我们定义了几个常量来初始化挡板的大小与速率。在 Game 的 Init 函数中我们计算挡板的初始位置，使其中心与场景的水平中心对齐。
 
-除此之外我们还需要在<fun>Game</fun>的<fun>Render</fun>函数中添加：
+除此之外我们还需要在 Game 的 Render 函数中添加：
 
 ```c++
 Player->Draw(*Renderer);
 ```
 
-如果你现在启动游戏，你不仅会看到关卡画面，还会有一个在场景底部边缘的奇特的挡板。到目前为止，它除了静态地放置在那以外不会发生任何事情，因此我们需要进入游戏的<fun>ProcessInput</fun>函数，使得当玩家按下A和D时，挡板可以水平移动。
+如果你现在启动游戏，你不仅会看到关卡画面，还会有一个在场景底部边缘的奇特的挡板。到目前为止，它除了静态地放置在那以外不会发生任何事情，因此我们需要进入游戏的 ProcessInput 函数，使得当玩家按下A和D时，挡板可以水平移动。
 
 ```c++
 void Game::ProcessInput(GLfloat dt)
@@ -284,6 +284,6 @@ void Game::ProcessInput(GLfloat dt)
 
 ![](../../img/06/Breakout/04/levels-player.png)
 
-你可以在下面找到更新后的<fun>Game</fun>类代码：
+你可以在下面找到更新后的 Game 类代码：
 
 - **Game**：[头文件](https://learnopengl.com/code_viewer.php?code=in-practice/breakout/game_levels.h)，[代码](https://learnopengl.com/code_viewer.php?code=in-practice/breakout/game_levels)

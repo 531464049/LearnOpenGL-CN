@@ -12,9 +12,9 @@
 
 此时我们已经有了一个包含有很多砖块和玩家的一个挡板的关卡。与经典的Breakout内容相比还差一个球。游戏的目的是让球撞击所有的砖块，直到所有的可销毁砖块都被销毁，但同时也要满足条件：球不能碰触屏幕的下边缘。
 
-除了通用的游戏对象组件，球还需要有半径和一个布尔值，该布尔值用于指示球被固定(<def>stuck</def>)在玩家挡板上还是被允许自由运动的状态。当游戏开始时，球被初始固定在玩家挡板上，直到玩家按下任意键开始游戏。
+除了通用的游戏对象组件，球还需要有半径和一个布尔值，该布尔值用于指示球被固定(stuck)在玩家挡板上还是被允许自由运动的状态。当游戏开始时，球被初始固定在玩家挡板上，直到玩家按下任意键开始游戏。
 
-由于球只是一个附带了一些额外属性的<fun>GameObject</fun>，所以按照常规需要创建<fun>BallObject</fun>类作为<fun>GameObject</fun>的子类。
+由于球只是一个附带了一些额外属性的 GameObject ，所以按照常规需要创建 BallObject 类作为 GameObject 的子类。
 
 ```c++
 class BallObject : public GameObject
@@ -33,7 +33,7 @@ class BallObject : public GameObject
 }; 
 ```
 
-<fun>BallObject</fun>的构造函数不但初始化了其自身的值，而且实际上也潜在地初始化了<fun>GameObject</fun>。<fun>BallObject</fun>类拥有一个<fun>Move</fun>函数，该函数用于根据球的速度来移动球，并检查它是否碰到了场景的任何边界，如果碰到的话就会反转球的速度：
+ BallObject 的构造函数不但初始化了其自身的值，而且实际上也潜在地初始化了 GameObject 。 BallObject 类拥有一个 Move 函数，该函数用于根据球的速度来移动球，并检查它是否碰到了场景的任何边界，如果碰到的话就会反转球的速度：
 
 
 ```c++
@@ -72,7 +72,7 @@ glm::vec2 BallObject::Move(GLfloat dt, GLuint window_width)
 
 	因为如果球碰触到底部边界时玩家会结束游戏（或失去一条命），所以在底部边界没有代码来控制球反弹。我们稍后需要在代码中某些地方实现这一逻辑。
 
-你可以在下边看到<fun>BallObject</fun>的代码：
+你可以在下边看到 BallObject 的代码：
 
 - BallObject: [header](https://learnopengl.com/code_viewer.php?code=in-practice/breakout/ball_object_collisions.h), [code](https://learnopengl.com/code_viewer.php?code=in-practice/breakout/ball_object_collisions)
 
@@ -95,7 +95,7 @@ void Game::Init()
         ResourceManager::GetTexture("face"));
 }
 ```
-然后我们在每帧中调用游戏代码中<fun>Update</fun>函数里的<fun>Move</fun>函数来更新球的位置：
+然后我们在每帧中调用游戏代码中 Update 函数里的 Move 函数来更新球的位置：
 
 ```c++
 void Game::Update(GLfloat dt)
@@ -104,7 +104,7 @@ void Game::Update(GLfloat dt)
 }  
 ```
 
-除此之外，由于球初始是固定在挡板上的，我们必须让玩家能够从固定的位置重新移动它。我们选择使用空格键来从挡板释放球。这意味着我们必须稍微修改<fun>ProcessInput</fun>函数：
+除此之外，由于球初始是固定在挡板上的，我们必须让玩家能够从固定的位置重新移动它。我们选择使用空格键来从挡板释放球。这意味着我们必须稍微修改 ProcessInput 函数：
 
 ```c++
 void Game::ProcessInput(GLfloat dt)
@@ -137,7 +137,7 @@ void Game::ProcessInput(GLfloat dt)
 }
 ```
 
-现在如果玩家按下了空格键，球的<var>Stuck</var>值会设置为<var>false</var>。我们还需要更新<fun>ProcessInput</fun>函数，当球被固定的时候，会跟随挡板的位置来移动球。
+现在如果玩家按下了空格键，球的 Stuck 值会设置为 false 。我们还需要更新 ProcessInput 函数，当球被固定的时候，会跟随挡板的位置来移动球。
 
 最后我们需要渲染球，此时这应该很显而易见了：
 
@@ -158,5 +158,5 @@ void Game::Render()
 
 
 
-我们要做的就是创建一个或多个函数用于检查球对象是否撞击关卡中的任何砖块，如果撞击的话就销毁砖块。这些所谓的碰撞检测(<def>collision detection</def>)功能将是我们[下一个](./02 Collision detection.md)教程的重点。
+我们要做的就是创建一个或多个函数用于检查球对象是否撞击关卡中的任何砖块，如果撞击的话就销毁砖块。这些所谓的碰撞检测(collision detection)功能将是我们[下一个](./02 Collision detection.md)教程的重点。
 

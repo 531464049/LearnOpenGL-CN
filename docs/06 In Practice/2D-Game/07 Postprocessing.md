@@ -77,7 +77,7 @@ void main()
 }  
 ```
 
-基于uniform是否被设置为true，顶点着色器可以执行不同的分支。如果<var>chaos</var>或<var>confuse</var>被设置为true，顶点着色器将操纵纹理坐标来移动场景（以圆形动画变换纹理坐标或反转纹理坐标）。因为我们将纹理环绕方式设置为了<var>GL_REPEAT</var>，所以**chaos**特效会导致场景在四边形的各个部分重复。除此之外，如果**shake**被设置为true，它将微量移动顶点位置。需要注意的是，<var>chaos</var>与<var>confuse</var>不应同时为true，而<var>shake</var>则可以与其他特效一起生效。
+基于uniform是否被设置为true，顶点着色器可以执行不同的分支。如果 chaos 或 confuse 被设置为true，顶点着色器将操纵纹理坐标来移动场景（以圆形动画变换纹理坐标或反转纹理坐标）。因为我们将纹理环绕方式设置为了 GL_REPEAT ，所以**chaos**特效会导致场景在四边形的各个部分重复。除此之外，如果**shake**被设置为true，它将微量移动顶点位置。需要注意的是， chaos 与 confuse 不应同时为true，而 shake 则可以与其他特效一起生效。
 
 当任意特效被激活时，除了偏移顶点的位置和纹理坐标，我们也希望创造显著的视觉效果。我们可以在片段着色器中实现这一点：
 
@@ -146,11 +146,11 @@ GLfloat offsets[9][2] = {
 glUniform2fv(glGetUniformLocation(shader.ID, "offsets"), 9, (GLfloat*)offsets);  
 ```
 
-由于所有管理帧缓冲器的概念已经在之前的教程中有过广泛的讨论，所以这次我不会深入其细节。下面是<fun>PostProcessor</fun>类的代码，它管理初始化，读写帧缓冲并将一个四边形渲染至屏幕。如果你理解了帧缓冲与反锯齿章节的教程，你应该可以完全它的代码。
+由于所有管理帧缓冲器的概念已经在之前的教程中有过广泛的讨论，所以这次我不会深入其细节。下面是 PostProcessor 类的代码，它管理初始化，读写帧缓冲并将一个四边形渲染至屏幕。如果你理解了帧缓冲与反锯齿章节的教程，你应该可以完全它的代码。
 
 - **PostProcessor**：[头文件](https://learnopengl.com/code_viewer.php?code=in-practice/breakout/post_processor.h)，[代码](https://learnopengl.com/code_viewer.php?code=in-practice/breakout/post_processor)
 
-有趣的是<fun>BeginRender</fun>和<fun>EndRender</fun>函数。由于我们必须将整个游戏场景渲染至帧缓冲中，因此我们可以在场景的渲染代码之前和之后分别调用<fun>BeginRender</fun>和<fun>EndRender</fun>。接着，这个类将处理幕后的帧缓冲操作。在游戏的渲染函数中使用<fun>PostProcessor</fun>类如下所示：
+有趣的是 BeginRender 和 EndRender 函数。由于我们必须将整个游戏场景渲染至帧缓冲中，因此我们可以在场景的渲染代码之前和之后分别调用 BeginRender 和 EndRender 。接着，这个类将处理幕后的帧缓冲操作。在游戏的渲染函数中使用 PostProcessor 类如下所示：
 
 ```c++
 PostProcessor   *Effects;
@@ -171,13 +171,13 @@ void Game::Render()
 }
 ```
 
-无论我们需要什么，我们只需要将需要的<fun>PostProcessor</fun>类中的特效属性设置为true，其效果就可以立即可见。
+无论我们需要什么，我们只需要将需要的 PostProcessor 类中的特效属性设置为true，其效果就可以立即可见。
 
 ## Shake it
 
 作为这些效果的演示，我们将模拟球击中坚固的混凝土块时的视觉冲击。无论在哪里发生碰撞，只要在短时间内实现晃动(shake)效果，便能增强撞击的冲击感。
 
-我们只想允许晃动效果持续一小段时间。我们可以通过声明一个持有晃动效果持续时间的变量<var>ShakeTime</var>来实现这个功能。无论碰撞何时发生，我们将这个变量重置为一个特定的持续时间:
+我们只想允许晃动效果持续一小段时间。我们可以通过声明一个持有晃动效果持续时间的变量 ShakeTime 来实现这个功能。无论碰撞何时发生，我们将这个变量重置为一个特定的持续时间:
 
 ```c++
 GLfloat ShakeTime = 0.0f;  
@@ -207,7 +207,7 @@ void Game::DoCollisions()
 }  
 ```
 
-然后在游戏的<fun>Update</fun>函数中，我们减少<var>ShakeTime</var>变量的值直到其为0.0，并停用shake特效。
+然后在游戏的 Update 函数中，我们减少 ShakeTime 变量的值直到其为0.0，并停用shake特效。
 
 ```c++
 void Game::Update(GLfloat dt)
@@ -226,6 +226,6 @@ void Game::Update(GLfloat dt)
 
 <video src="https://learnopengl.com/video/in-practice/breakout/postprocessing_shake.mp4" controls="controls"></video>
 
-你可以在[这里](https://learnopengl.com/code_viewer.php?code=in-practice/breakout/game_postprocessing)找到更新后的<fun>Game</fun>类。
+你可以在[这里](https://learnopengl.com/code_viewer.php?code=in-practice/breakout/game_postprocessing)找到更新后的 Game 类。
 
 在[下一章](./08 Powerups.md)关于“道具”的教程中我们将带来另外两种的特效的使用。

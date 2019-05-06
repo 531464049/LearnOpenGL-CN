@@ -57,12 +57,12 @@ if (glewInit() != GLEW_OK)
 }
 ```
 
-请注意，我们在初始化GLEW之前设置<var>glewExperimental</var>变量的值为`GL_TRUE`，这样做能让GLEW在管理OpenGL的函数指针时更多地使用现代化的技术，如果把它设置为`GL_FALSE`的话可能会在使用OpenGL的核心模式时出现一些问题。
+请注意，我们在初始化GLEW之前设置 glewExperimental 变量的值为`GL_TRUE`，这样做能让GLEW在管理OpenGL的函数指针时更多地使用现代化的技术，如果把它设置为`GL_FALSE`的话可能会在使用OpenGL的核心模式时出现一些问题。
 
 
 ### 视口(Viewport)
 
-在我们开始渲染之前还有一件重要的事情要做，我们必须告诉OpenGL渲染窗口的尺寸大小，这样OpenGL才只能知道怎样相对于窗口大小显示数据和坐标。我们可以通过调用<fun>glViewport</fun>函数来设置窗口的**维度**(Dimension)：
+在我们开始渲染之前还有一件重要的事情要做，我们必须告诉OpenGL渲染窗口的尺寸大小，这样OpenGL才只能知道怎样相对于窗口大小显示数据和坐标。我们可以通过调用 glViewport 函数来设置窗口的**维度**(Dimension)：
 
 ```c++
 int width, height;
@@ -71,22 +71,22 @@ glfwGetFramebufferSize(window, &width, &height);
 glViewport(0, 0, width, height);
 ```
 
-<fun>glViewport</fun>函数前两个参数控制窗口左下角的位置。第三个和第四个参数控制渲染窗口的宽度和高度（像素），这里我们是直接从GLFW中获取的。我们从GLFW中获取视口的维度而不设置为800*600是为了让它在高DPI的屏幕上（比如说Apple的视网膜显示屏）也能[正常工作](http://www.glfw.org/docs/latest/window.html#window_size)。
+ glViewport 函数前两个参数控制窗口左下角的位置。第三个和第四个参数控制渲染窗口的宽度和高度（像素），这里我们是直接从GLFW中获取的。我们从GLFW中获取视口的维度而不设置为800*600是为了让它在高DPI的屏幕上（比如说Apple的视网膜显示屏）也能[正常工作](http://www.glfw.org/docs/latest/window.html#window_size)。
 
 我们实际上也可以将视口的维度设置为比GLFW的维度小，这样子之后所有的OpenGL渲染将会在一个更小的窗口中显示，这样子的话我们也可以将一些其它元素显示在OpenGL视口之外。
 
 !!! Important
 
-	OpenGL幕后使用<fun>glViewport</fun>中定义的位置和宽高进行2D坐标的转换，将OpenGL中的位置坐标转换为你的屏幕坐标。例如，OpenGL中的坐标(-0.5, 0.5)有可能（最终）被映射为屏幕中的坐标(200,450)。注意，处理过的OpenGL坐标范围只为-1到1，因此我们事实上将(-1到1)范围内的坐标映射到(0, 800)和(0, 600)。
+	OpenGL幕后使用 glViewport 中定义的位置和宽高进行2D坐标的转换，将OpenGL中的位置坐标转换为你的屏幕坐标。例如，OpenGL中的坐标(-0.5, 0.5)有可能（最终）被映射为屏幕中的坐标(200,450)。注意，处理过的OpenGL坐标范围只为-1到1，因此我们事实上将(-1到1)范围内的坐标映射到(0, 800)和(0, 600)。
 ### 输入
 
-我们同样也希望能够在GLFW中实现一些键盘控制，这可以通过使用GLFW的回调函数(Callback Function)来完成。<def>回调函数</def>事实上是一个函数指针，当我们设置好后，GLFW会在合适的时候调用它。**按键回调**(KeyCallback)是众多回调函数中的一种。当我们设置了按键回调之后，GLFW会在用户有键盘交互时调用它。该回调函数的原型如下所示：
+我们同样也希望能够在GLFW中实现一些键盘控制，这可以通过使用GLFW的回调函数(Callback Function)来完成。回调函数事实上是一个函数指针，当我们设置好后，GLFW会在合适的时候调用它。**按键回调**(KeyCallback)是众多回调函数中的一种。当我们设置了按键回调之后，GLFW会在用户有键盘交互时调用它。该回调函数的原型如下所示：
 
 ```c++
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mode);
 ```
 
-按键回调函数接受一个<fun>GLFWwindow</fun>指针作为它的第一个参数；第二个整形参数用来表示按下的按键；`action`参数表示这个按键是被按下还是释放；最后一个整形参数表示是否有Ctrl、Shift、Alt、Super等按钮的操作。GLFW会在合适的时候调用它，并为各个参数传入适当的值。
+按键回调函数接受一个 GLFWwindow 指针作为它的第一个参数；第二个整形参数用来表示按下的按键；`action`参数表示这个按键是被按下还是释放；最后一个整形参数表示是否有Ctrl、Shift、Alt、Super等按钮的操作。GLFW会在合适的时候调用它，并为各个参数传入适当的值。
 
 
 ```c++
@@ -99,7 +99,7 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 }    
 ```
 
-在我们（新创建的）<fun>key_callback</fun>函数中，我们检测了键盘是否按下了Escape键。如果键的确按下了(不释放)，我们使用<fun>glfwSetwindowShouldClose</fun>函数设定`WindowShouldClose`属性为`true`从而关闭GLFW。main函数的`while`循环下一次的检测将为失败，程序就关闭了。
+在我们（新创建的） key_callback 函数中，我们检测了键盘是否按下了Escape键。如果键的确按下了(不释放)，我们使用 glfwSetwindowShouldClose 函数设定`WindowShouldClose`属性为`true`从而关闭GLFW。main函数的`while`循环下一次的检测将为失败，程序就关闭了。
 
 最后一件事就是通过GLFW注册我们的函数至合适的回调，代码是这样的:
 
@@ -115,7 +115,7 @@ glfwSetKeyCallback(window, key_callback);
 
 SOIL是简易OpenGL图像库(Simple OpenGL Image Library)的缩写，它支持大多数流行的图像格式，使用起来也很简单，你可以从他们的[主页](http://www.lonesock.net/soil.html)下载。像其它库一样，你必须自己生成**.lib**。你可以使用**/projects**文件夹内的任意一个解决方案(Solution)文件（不用担心他们的Visual Studio版本太老，你可以把它们转变为新的版本，这一般是没问题的。译注：用VS2010的时候，你要用VC8而不是VC9的解决方案，想必更高版本的情况亦是如此）来生成你自己的**.lib**文件。你还要添加**src**文件夹里面的文件到你的**includes**文件夹；对了，不要忘记添加**SOIL.lib**到你的链接器选项，并在你代码文件的开头加上`#include <SOIL.h>`。
 
-下面的教程中，我们会使用一张[木箱](img/01/06/container.jpg)的图片。要使用SOIL加载图片，我们需要使用它的<fun>SOIL_load_image</fun>函数：
+下面的教程中，我们会使用一张[木箱](img/01/06/container.jpg)的图片。要使用SOIL加载图片，我们需要使用它的 SOIL_load_image 函数：
 
 ```c++
 int width, height;
@@ -133,13 +133,13 @@ GLuint texture;
 glGenTextures(1, &texture);
 ```
 
-<fun>glGenTextures</fun>函数首先需要输入生成纹理的数量，然后把它们储存在第二个参数的`GLuint`数组中（我们的例子中只是一个单独的`GLuint`），就像其他对象一样，我们需要绑定它，让之后任何的纹理指令都可以配置当前绑定的纹理：
+ glGenTextures 函数首先需要输入生成纹理的数量，然后把它们储存在第二个参数的`GLuint`数组中（我们的例子中只是一个单独的`GLuint`），就像其他对象一样，我们需要绑定它，让之后任何的纹理指令都可以配置当前绑定的纹理：
 
 ```c++
 glBindTexture(GL_TEXTURE_2D, texture);
 ```
 
-现在纹理已经绑定了，我们可以使用前面载入的图片数据生成一个纹理了。纹理可以通过<fun>glTexImage2D</fun>来生成：
+现在纹理已经绑定了，我们可以使用前面载入的图片数据生成一个纹理了。纹理可以通过 glTexImage2D 来生成：
 
 ```c++
 glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, image);
@@ -148,7 +148,7 @@ glGenerateMipmap(GL_TEXTURE_2D);
 
 函数很长，参数也不少，所以我们一个一个地讲解：
 
-- 第一个参数指定了纹理目标(Target)。设置为<var>GL_TEXTURE_2D</var>意味着会生成与当前绑定的纹理对象在同一个目标上的纹理（任何绑定到<var>GL_TEXTURE_1D</var>和<var>GL_TEXTURE_3D</var>的纹理不会受到影响）。
+- 第一个参数指定了纹理目标(Target)。设置为 GL_TEXTURE_2D 意味着会生成与当前绑定的纹理对象在同一个目标上的纹理（任何绑定到 GL_TEXTURE_1D 和 GL_TEXTURE_3D 的纹理不会受到影响）。
 - 第二个参数为纹理指定多级渐远纹理的级别，如果你希望单独手动设置每个多级渐远纹理的级别的话。这里我们填0，也就是基本级别。
 - 第三个参数告诉OpenGL我们希望把纹理储存为何种格式。我们的图像只有`RGB`值，因此我们也把纹理储存为`RGB`值。
 - 第四个和第五个参数设置最终的纹理的宽度和高度。我们之前加载图像的时候储存了它们，所以我们使用对应的变量。
@@ -156,7 +156,7 @@ glGenerateMipmap(GL_TEXTURE_2D);
 - 第七第八个参数定义了源图的格式和数据类型。我们使用RGB值加载这个图像，并把它们储存为`char`(byte)数组，我们将会传入对应值。
 - 最后一个参数是真正的图像数据。
 
-当调用<fun>glTexImage2D</fun>时，当前绑定的纹理对象就会被附加上纹理图像。然而，目前只有基本级别(Base-level)的纹理图像被加载了，如果要使用多级渐远纹理，我们必须手动设置所有不同的图像（不断递增第二个参数）。或者，直接在生成纹理之后调用<fun>glGenerateMipmap</fun>。这会为当前绑定的纹理自动生成所有需要的多级渐远纹理。
+当调用 glTexImage2D 时，当前绑定的纹理对象就会被附加上纹理图像。然而，目前只有基本级别(Base-level)的纹理图像被加载了，如果要使用多级渐远纹理，我们必须手动设置所有不同的图像（不断递增第二个参数）。或者，直接在生成纹理之后调用 glGenerateMipmap 。这会为当前绑定的纹理自动生成所有需要的多级渐远纹理。
 
 生成了纹理和相应的多级渐远纹理后，释放图像的内存并解绑纹理对象是一个很好的习惯。
 
@@ -184,20 +184,20 @@ glBindTexture(GL_TEXTURE_2D, 0);
 
 ### 纹理单元
 
-你可能会奇怪为什么`sampler2D`变量是个uniform，我们却不用<fun>glUniform</fun>给它赋值。使用<fun>glUniform1i</fun>，我们可以给纹理采样器分配一个位置值，这样的话我们能够在一个片段着色器中设置多个纹理。一个纹理的位置值通常称为一个<def>纹理单元</def>(Texture Unit)。一个纹理的默认纹理单元是0，它是默认的激活纹理单元，所以教程前面部分我们没有分配一个位置值。
+你可能会奇怪为什么`sampler2D`变量是个uniform，我们却不用 glUniform 给它赋值。使用 glUniform1i ，我们可以给纹理采样器分配一个位置值，这样的话我们能够在一个片段着色器中设置多个纹理。一个纹理的位置值通常称为一个纹理单元(Texture Unit)。一个纹理的默认纹理单元是0，它是默认的激活纹理单元，所以教程前面部分我们没有分配一个位置值。
 
-纹理单元的主要目的是让我们在着色器中可以使用多于一个的纹理。通过把纹理单元赋值给采样器，我们可以一次绑定多个纹理，只要我们首先激活对应的纹理单元。就像<fun>glBindTexture</fun>一样，我们可以使用<fun>glActiveTexture</fun>激活纹理单元，传入我们需要使用的纹理单元：
+纹理单元的主要目的是让我们在着色器中可以使用多于一个的纹理。通过把纹理单元赋值给采样器，我们可以一次绑定多个纹理，只要我们首先激活对应的纹理单元。就像 glBindTexture 一样，我们可以使用 glActiveTexture 激活纹理单元，传入我们需要使用的纹理单元：
 
 ```c++
 glActiveTexture(GL_TEXTURE0); //在绑定纹理之前先激活纹理单元
 glBindTexture(GL_TEXTURE_2D, texture);
 ```
 
-激活纹理单元之后，接下来的<fun>glBindTexture</fun>函数调用会绑定这个纹理到当前激活的纹理单元，纹理单元<var>GL_TEXTURE0</var>默认总是被激活，所以我们在前面的例子里当我们使用`glBindTexture`的时候，无需激活任何纹理单元。
+激活纹理单元之后，接下来的 glBindTexture 函数调用会绑定这个纹理到当前激活的纹理单元，纹理单元 GL_TEXTURE0 默认总是被激活，所以我们在前面的例子里当我们使用`glBindTexture`的时候，无需激活任何纹理单元。
 
 !!! Important
 
-	OpenGL至少保证有16个纹理单元供你使用，也就是说你可以激活从<var>GL_TEXTURE0</var>到<var>GL_TEXTRUE15</var>。它们都是按顺序定义的，所以我们也可以通过<var>GL_TEXTURE0 + 8</var>的方式获得<var>GL_TEXTURE8</var>，这在当我们需要循环一些纹理单元的时候会很有用。
+	OpenGL至少保证有16个纹理单元供你使用，也就是说你可以激活从 GL_TEXTURE0 到 GL_TEXTRUE15 。它们都是按顺序定义的，所以我们也可以通过 GL_TEXTURE0 + 8 的方式获得 GL_TEXTURE8 ，这在当我们需要循环一些纹理单元的时候会很有用。
         
 我们仍然需要编辑片段着色器来接收另一个采样器。这应该相对来说非常直接了：
 
@@ -214,9 +214,9 @@ void main()
 }
 ```
 
-最终输出颜色现在是两个纹理的结合。GLSL内建的<fun>mix</fun>函数需要接受两个值作为参数，并对它们根据第三个参数进行线性插值。。如果第三个值是`0.0`，它会返回第一个输入；如果是`1.0`，会返回第二个输入值。`0.2`会返回`80%`的第一个输入颜色和`20%`的第二个输入颜色，即返回两个纹理的混合色。
+最终输出颜色现在是两个纹理的结合。GLSL内建的 mix 函数需要接受两个值作为参数，并对它们根据第三个参数进行线性插值。。如果第三个值是`0.0`，它会返回第一个输入；如果是`1.0`，会返回第二个输入值。`0.2`会返回`80%`的第一个输入颜色和`20%`的第二个输入颜色，即返回两个纹理的混合色。
 
-我们现在需要载入并创建另一个纹理；你应该对这些步骤很熟悉了。记得创建另一个纹理对象，载入图片，使用<fun>glTexImage2D</fun>生成最终纹理。对于第二个纹理我们使用一张[你学习OpenGL时的面部表情](img/01/06/awesomeface.png)图片。
+我们现在需要载入并创建另一个纹理；你应该对这些步骤很熟悉了。记得创建另一个纹理对象，载入图片，使用 glTexImage2D 生成最终纹理。对于第二个纹理我们使用一张[你学习OpenGL时的面部表情](img/01/06/awesomeface.png)图片。
 
 为了使用第二个纹理（以及第一个），我们必须改变一点渲染流程，先绑定两个纹理到对应的纹理单元，然后定义哪个uniform采样器对应哪个纹理单元：
 
@@ -233,11 +233,11 @@ glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 glBindVertexArray(0);
 ```
 
-注意，我们使用<fun>glUniform1i</fun>设置uniform采样器的位置值，或者说纹理单元。通过<fun>glUniform1i</fun>的设置，我们保证每个uniform采样器对应着正确的纹理单元。你应该能得到下面的结果：
+注意，我们使用 glUniform1i 设置uniform采样器的位置值，或者说纹理单元。通过 glUniform1i 的设置，我们保证每个uniform采样器对应着正确的纹理单元。你应该能得到下面的结果：
 
 ![](img/01/06/textures_combined.png)
 
-你可能注意到纹理上下颠倒了！这是因为OpenGL要求y轴`0.0`坐标是在图片的底部的，但是图片的y轴`0.0`坐标通常在顶部。一些图片加载器比如[DevIL](http://openil.sourceforge.net/tuts/tut_10/index.htm)在加载的时候有选项重置y原点，但是SOIL没有。SOIL却有一个叫做<fun>SOIL_load_OGL_texture</fun>函数可以使用一个叫做<var>SOIL_FLAG_INVERT_Y</var>的标记加载**并**生成纹理，这可以解决我们的问题。不过这个函数用了一些在现代OpenGL中失效的特性，所以现在我们仍需坚持使用<fun>SOIL_load_image</fun>，自己做纹理的生成。
+你可能注意到纹理上下颠倒了！这是因为OpenGL要求y轴`0.0`坐标是在图片的底部的，但是图片的y轴`0.0`坐标通常在顶部。一些图片加载器比如[DevIL](http://openil.sourceforge.net/tuts/tut_10/index.htm)在加载的时候有选项重置y原点，但是SOIL没有。SOIL却有一个叫做 SOIL_load_OGL_texture 函数可以使用一个叫做 SOIL_FLAG_INVERT_Y 的标记加载**并**生成纹理，这可以解决我们的问题。不过这个函数用了一些在现代OpenGL中失效的特性，所以现在我们仍需坚持使用 SOIL_load_image ，自己做纹理的生成。
 
 所以修复我们的小问题，有两个选择：
 
@@ -273,9 +273,9 @@ glm::vec3 cameraUp    = glm::vec3(0.0f, 1.0f,  0.0f);
 view = glm::lookAt(cameraPos, cameraPos + cameraFront, cameraUp);
 ```
 
-我们首先将摄像机位置设置为之前定义的<var>cameraPos</var>。方向是当前的位置加上我们刚刚定义的方向向量。这样能保证无论我们怎么移动，摄像机都会注视着目标方向。让我们摆弄一下这些向量，在按下某些按钮时更新<var>cameraPos</var>向量。
+我们首先将摄像机位置设置为之前定义的 cameraPos 。方向是当前的位置加上我们刚刚定义的方向向量。这样能保证无论我们怎么移动，摄像机都会注视着目标方向。让我们摆弄一下这些向量，在按下某些按钮时更新 cameraPos 向量。
 
-我们已经为GLFW的键盘输入定义了一个<fun>key_callback</fun>函数，我们来新添加几个需要检查的按键命令：
+我们已经为GLFW的键盘输入定义了一个 key_callback 函数，我们来新添加几个需要检查的按键命令：
 
 ```c++
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mode)
@@ -293,13 +293,13 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 }
 ```
 
-当我们按下**WASD**键的任意一个，摄像机的位置都会相应更新。如果我们希望向前或向后移动，我们就把位置向量加上或减去方向向量。如果我们希望向左右移动，我们使用叉乘来创建一个**右向量**(Right Vector)，并沿着它相应移动就可以了。这样就创建了使用摄像机时熟悉的<def>扫射</def>(Strafe)效果。
+当我们按下**WASD**键的任意一个，摄像机的位置都会相应更新。如果我们希望向前或向后移动，我们就把位置向量加上或减去方向向量。如果我们希望向左右移动，我们使用叉乘来创建一个**右向量**(Right Vector)，并沿着它相应移动就可以了。这样就创建了使用摄像机时熟悉的扫射(Strafe)效果。
 
 !!! important
 
-	注意，我们对**右向量**进行了标准化。如果我们没对这个向量进行标准化，最后的叉乘结果会根据<var>cameraFront</var>变量返回大小不同的向量。如果我们不对向量进行标准化，我们就得根据摄像机的朝向不同加速或减速移动了，但假如进行了标准化移动就是匀速的。
+	注意，我们对**右向量**进行了标准化。如果我们没对这个向量进行标准化，最后的叉乘结果会根据 cameraFront 变量返回大小不同的向量。如果我们不对向量进行标准化，我们就得根据摄像机的朝向不同加速或减速移动了，但假如进行了标准化移动就是匀速的。
 
-如果你用这段代码更新<fun>key_callback</fun>函数，你就可以在场景中自由的前后左右移动了。
+如果你用这段代码更新 key_callback 函数，你就可以在场景中自由的前后左右移动了。
 
 <video src="../img/01/09/camera_inside.mp4" controls="controls">
 </video>
@@ -312,7 +312,7 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 bool keys[1024];
 ```
 
-然后我们需要在<fun>key_callback</fun>函数中设置被按下/释放的按键为`true`或`false`：
+然后我们需要在 key_callback 函数中设置被按下/释放的按键为`true`或`false`：
 
 ```c++
 if(action == GLFW_PRESS)
@@ -321,7 +321,7 @@ else if(action == GLFW_RELEASE)
     keys[key] = false;
 ```
 
-并且我们创建一个新的叫做<fun>do_movement</fun>的函数，在这个函数中，我们将根据正在被按下的按键更新摄像机的值。：
+并且我们创建一个新的叫做 do_movement 的函数，在这个函数中，我们将根据正在被按下的按键更新摄像机的值。：
 
 ```c++
 void do_movement()
@@ -339,7 +339,7 @@ void do_movement()
 }
 ```
 
-之前的代码现在被移动到<fun>do_movement</fun>函数中。由于所有GLFW的按键枚举值本质上都是整数，我们可以把它们当数组索引使用。
+之前的代码现在被移动到 do_movement 函数中。由于所有GLFW的按键枚举值本质上都是整数，我们可以把它们当数组索引使用。
 
 最后，我们需要在游戏循环中添加新函数的调用：
 

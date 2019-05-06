@@ -14,7 +14,7 @@ Breakout已经接近完成了，但我们可以至少再增加一种游戏机制
 
 这个想法的含义是，无论一个砖块何时被摧毁，它都有一定几率产生一个道具块。这样的道具快会缓慢降落，而且当它与玩家挡板发生接触时，会发生基于道具类型的有趣效果。例如，某一种道具可以让玩家挡板变长，另一种道具则可以让小球穿过物体。我们还可以添加一些可以给玩家造成负面影响的负面道具。
 
-我们可以将道具建模为具有一些额外属性的<fun>GameObject</fun>，这也是为什么我们定义一个继承自<fun>GameObject</fun>的<fun>PowerUp</fun>类并在其中增添了一些额外的成员属性。
+我们可以将道具建模为具有一些额外属性的 GameObject ，这也是为什么我们定义一个继承自 GameObject 的 PowerUp 类并在其中增添了一些额外的成员属性。
 
 ```c++
 const glm::vec2 SIZE(60, 20);
@@ -36,7 +36,7 @@ public:
 }; 
 ```
 
-<fun>PowerUp</fun>类仅仅是一个有一些额外状态的<fun>GameObject</fun>， 所以我们简单地将它定义为一个头文件，你可以在[这里](https://learnopengl.com/code_viewer.php?code=in-practice/breakout/power_up.h)找到它。
+ PowerUp 类仅仅是一个有一些额外状态的 GameObject ， 所以我们简单地将它定义为一个头文件，你可以在[这里](https://learnopengl.com/code_viewer.php?code=in-practice/breakout/power_up.h)找到它。
 
 每个道具以字符串的形式定义它的类型，持有表示它有效时长的持续时间与表示当前是否被激活的属性。在Breakout中，我们将添加4种增益道具与2种负面道具：
 
@@ -68,11 +68,11 @@ class Game {
 };
 ```
 
-我们还定义了两个管理道具的函数，<fun>SpawnPowerUps</fun>在给定的砖块位置生成一个道具，<fun>UpdatePowerUps</fun>管理所有当前被激活的道具。
+我们还定义了两个管理道具的函数， SpawnPowerUps 在给定的砖块位置生成一个道具， UpdatePowerUps 管理所有当前被激活的道具。
 
 ## SpawnPowerUps
 
-每次砖块被摧毁时我们希望以一定几率生成一个道具，这个功能可以在<fun>Game</fun>的<fun>SpawnPowerUps</fun>函数中找到：
+每次砖块被摧毁时我们希望以一定几率生成一个道具，这个功能可以在 Game 的 SpawnPowerUps 函数中找到：
 
 ```c++
 GLboolean ShouldSpawn(GLuint chance)
@@ -109,11 +109,11 @@ void Game::SpawnPowerUps(GameObject &block)
 }
 ```
 
-这样的<fun>SpawnPowerUps</fun>函数以一定几率（1/75普通道具，1/15负面道具）生成一个新的<fun>PowerUp</fun>对象，并设置其属性。每种道具有特殊的颜色使它们更具有辨识度，同时根据类型决定其持续时间的秒数，若值为0.0f则表示它持续无限长的时间。除此之外，每个道具初始化时传入被摧毁砖块的位置与上一小节给出的对应纹理。
+这样的 SpawnPowerUps 函数以一定几率（1/75普通道具，1/15负面道具）生成一个新的 PowerUp 对象，并设置其属性。每种道具有特殊的颜色使它们更具有辨识度，同时根据类型决定其持续时间的秒数，若值为0.0f则表示它持续无限长的时间。除此之外，每个道具初始化时传入被摧毁砖块的位置与上一小节给出的对应纹理。
 
 ## 激活道具
 
-接下来我们更新游戏的<fun>DoCollisions</fun>函数使它不只检查小球与砖块和挡板的碰撞，还检查挡板与所有未被销毁的道具的碰撞。注意我们在砖块被摧毁的同时调用<fun>SpawnPowerUps</fun>函数。
+接下来我们更新游戏的 DoCollisions 函数使它不只检查小球与砖块和挡板的碰撞，还检查挡板与所有未被销毁的道具的碰撞。注意我们在砖块被摧毁的同时调用 SpawnPowerUps 函数。
 
 ```c++
 void Game::DoCollisions()
@@ -154,7 +154,7 @@ void Game::DoCollisions()
 
 对所有未被销毁的道具，我们检查它是否接触到了屏幕底部或玩家挡板，无论哪种情况我们都销毁它，但当道具与玩家挡板接触时，激活这个道具。
 
-激活道具的操作可以通过将其<var>Activated</var>属性设为true来完成，实现其效果则需要将它传给<fun>ActivatePowerUp</fun>函数：
+激活道具的操作可以通过将其 Activated 属性设为true来完成，实现其效果则需要将它传给 ActivatePowerUp 函数：
 
 ```c++
 void ActivatePowerUp(PowerUp &powerUp)
@@ -191,13 +191,13 @@ void ActivatePowerUp(PowerUp &powerUp)
 } 
 ```
 
-<fun>ActivatePowerUp</fun>的目的正如其名称，它按本章教程之前所预设的那样激活了一个道具的效果。我们检查道具的类型并相应地改变游戏状态。对于**Sticky**和**Pass-through**效果，我们也相应地改变了挡板和小球的颜色来给玩家一些当前被激活了哪种效果的反馈。
+ ActivatePowerUp 的目的正如其名称，它按本章教程之前所预设的那样激活了一个道具的效果。我们检查道具的类型并相应地改变游戏状态。对于**Sticky**和**Pass-through**效果，我们也相应地改变了挡板和小球的颜色来给玩家一些当前被激活了哪种效果的反馈。
 
-因为**Sticky**和**Pass-through**效果稍微改变了一些原有的游戏逻辑，所以我们将这些效果作为属性存储在小球对象中，这样我们可以根据小球当前激活了什么效果而改变游戏逻辑。我们只在<fun>BallObject</fun>的头文件中增加了两个属性，但为了完整性下面给出了更新后的代码：
+因为**Sticky**和**Pass-through**效果稍微改变了一些原有的游戏逻辑，所以我们将这些效果作为属性存储在小球对象中，这样我们可以根据小球当前激活了什么效果而改变游戏逻辑。我们只在 BallObject 的头文件中增加了两个属性，但为了完整性下面给出了更新后的代码：
 
 - **GameObject**: [头文件](https://learnopengl.com/code_viewer.php?code=in-practice/breakout/ball_object.h)，[代码](https://learnopengl.com/code_viewer.php?code=in-practice/breakout/ball_object)
 
-这样我们可以通过改动<fun>DoCollisions</fun>函数中小球与挡板碰撞的代码便捷地实现**Sticky**效果。
+这样我们可以通过改动 DoCollisions 函数中小球与挡板碰撞的代码便捷地实现**Sticky**效果。
 
 ```c++
 if (!Ball->Stuck && std::get<0>(result))
@@ -209,7 +209,7 @@ if (!Ball->Stuck && std::get<0>(result))
 
 在这里我们将小球的Stuck属性设置为它自己的Sticky属性，若**Stikcy**效果被激活，那么小球则会在与挡板接触时粘在上面，玩家不得不再次按下空格键才能释放它。
 
-在同样的<fun>DoCollisions</fun>函数中还有个为了实现**Pass-through**效果的类似小改动。当小球的<var>PassThrough</var>属性被设置为true时，我们不对非实习砖块做碰撞处理操作。
+在同样的 DoCollisions 函数中还有个为了实现**Pass-through**效果的类似小改动。当小球的 PassThrough 属性被设置为true时，我们不对非实习砖块做碰撞处理操作。
 
 ```c++
 Direction dir = std::get<1>(collision);
@@ -227,13 +227,13 @@ if (!(Ball->PassThrough && !box.IsSolid))
 }  
 ```
 
-其他效果可以通过简单的更改游戏的状态来实现，如小球的速度、挡板的尺寸、<fun>PostProcessor</fun>对象的效果。
+其他效果可以通过简单的更改游戏的状态来实现，如小球的速度、挡板的尺寸、 PostProcessor 对象的效果。
 
 ## 更新道具
 
 现在剩下要做的就是保证道具生成后可以移动，并且在它们的持续时间用尽后失效，否则道具将永远保持激活状态。
 
-在游戏的<fun>UpdatePowerUps</fun>函数中，我们根据道具的速度移动它，并减少已激活道具的持续时间，每当时间减少至小于0时，我们令其失效，并恢复相关变量的状态。
+在游戏的 UpdatePowerUps 函数中，我们根据道具的速度移动它，并减少已激活道具的持续时间，每当时间减少至小于0时，我们令其失效，并恢复相关变量的状态。
 
 ```c++
 void Game::UpdatePowerUps(GLfloat dt)
@@ -289,13 +289,13 @@ void Game::UpdatePowerUps(GLfloat dt)
 }  
 ```
 
-你可以看到对于每个效果，我们通过将相关元素重置来停用它。我们还将<fun>PowerUp</fun>的<var>Activated</var>属性设为false，在<fun>UpdatePowerUps</fun>结束时，我们通过循环PowerUps容器，若一个道具被销毁切被停用，则移除它。我们在算法开头使用<fun>remove_if</fun>函数，通过给定的lamda表达式消除这些对象。
+你可以看到对于每个效果，我们通过将相关元素重置来停用它。我们还将 PowerUp 的 Activated 属性设为false，在 UpdatePowerUps 结束时，我们通过循环PowerUps容器，若一个道具被销毁切被停用，则移除它。我们在算法开头使用 remove_if 函数，通过给定的lamda表达式消除这些对象。
 
 !!! important
 
-    <fun>remove_if</fun>函数将lamda表达式为true的元素移动至容器的末尾并返回一个迭代器指向应被移除的元素范围的开始部分。容器的<fun>erase</fun>函数接着擦除这个迭代器指向的元素与容器末尾元素之间的所有元素。
+     remove_if 函数将lamda表达式为true的元素移动至容器的末尾并返回一个迭代器指向应被移除的元素范围的开始部分。容器的 erase 函数接着擦除这个迭代器指向的元素与容器末尾元素之间的所有元素。
 
-可能会发生这样的情况：当一个道具在激活状态时，另一个道具与挡板发生了接触。在这种情况下我们有超过1个在当前<var>PowerUps</var>容器中处于激活状态的道具。然后，当这些道具中的一个被停用时，我们不应使其效果失效因为另一个相同类型的道具仍处于激活状态。出于这个原因，我们使用<fun>isOtherPowerUpActive</fun>检查是否有同类道具处于激活状态。只有当它返回false时，我们才停用这个道具的效果。这样，给定类型的道具的持续时间就可以延长至最近一次被激活后的持续时间。
+可能会发生这样的情况：当一个道具在激活状态时，另一个道具与挡板发生了接触。在这种情况下我们有超过1个在当前 PowerUps 容器中处于激活状态的道具。然后，当这些道具中的一个被停用时，我们不应使其效果失效因为另一个相同类型的道具仍处于激活状态。出于这个原因，我们使用 isOtherPowerUpActive 检查是否有同类道具处于激活状态。只有当它返回false时，我们才停用这个道具的效果。这样，给定类型的道具的持续时间就可以延长至最近一次被激活后的持续时间。
 
 ```c++
 GLboolean IsOtherPowerUpActive(std::vector<PowerUp> &powerUps, std::string type)
@@ -310,7 +310,7 @@ GLboolean IsOtherPowerUpActive(std::vector<PowerUp> &powerUps, std::string type)
 }  
 ```
 
-这个函数简单地检查是否有同类道具处于激活状态，如果有则返回<var>GL_TRUE</var>。
+这个函数简单地检查是否有同类道具处于激活状态，如果有则返回 GL_TRUE 。
 
 最后剩下的一件事便是渲染道具：
 
