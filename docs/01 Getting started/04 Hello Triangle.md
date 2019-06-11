@@ -181,8 +181,7 @@ glCompileShader(vertexShader);
 
  glShaderSource 函数把要编译的着色器对象作为第一个参数。第二参数指定了传递的源码字符串数量，这里只有一个。第三个参数是顶点着色器真正的源码，第四个参数我们先设置为`NULL`。
 
-!!! Important
-
+	!!! Important
 	你可能会希望检测在调用 glCompileShader 后编译是否成功了，如果没成功的话，你还会希望知道错误是什么，这样你才能修复它们。检测编译时错误可以通过以下代码来实现：
 	
 	    int  success;

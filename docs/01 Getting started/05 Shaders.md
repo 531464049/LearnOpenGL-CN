@@ -1,10 +1,10 @@
 # 着色器
 
-原文     | [Shaders](http://learnopengl.com/#!Getting-started/Shaders)
-      ---|---
-作者     | JoeyDeVries
-翻译     | [Django](http://bullteacher.com/), Krasjet, Geequlim
-校对     | 暂未校对
+| 原文 | [Shaders](http://learnopengl.com/#!Getting-started/Shaders) |
+| ---- | ----------------------------------------------------------- |
+| 作者 | JoeyDeVries                                                 |
+| 翻译 | [Django](http://bullteacher.com/), Krasjet, Geequlim        |
+| 校对 | 暂未校对                                                    |
 
 在[Hello Triangle](04 Hello Triangle.md)教程中提到，着色器(Shader)是运行在GPU上的小程序。这些小程序为图形渲染管线的某个特定部分而运行。从基本意义上来说，着色器只是一种把输入转化为输出的程序。着色器也是一种非常独立的程序，因为它们之间不能相互通信；它们之间唯一的沟通只有通过输入和输出。
 
@@ -48,19 +48,21 @@ std::cout << "Maximum nr of vertex attributes supported: " << nrAttributes << st
 
 ## 数据类型
 
-和其他编程语言一样，GLSL有数据类型可以来指定变量的种类。GLSL中包含C等其它语言大部分的默认基础数据类型：`int`、`float`、`double`、`uint`和`bool`。GLSL也有两种容器类型，它们会在这个教程中使用很多，分别是向量(Vector)和矩阵(Matrix)，其中矩阵我们会在之后的教程里再讨论。
+和其他编程语言一样，GLSL有数据类型可以来指定变量的种类。
+GLSL中包含C等其它语言大部分的默认基础数据类型：`int`、`float`、`double`、`uint`和`bool`。
+GLSL也有两种容器类型，它们会在这个教程中使用很多，分别是向量(Vector)和矩阵(Matrix)，其中矩阵我们会在之后的教程里再讨论。
 
 ### 向量
 
 GLSL中的向量是一个可以包含有1、2、3或者4个分量的容器，分量的类型可以是前面默认基础类型的任意一个。它们可以是下面的形式（`n`代表分量的数量）：
 
-  类型|含义
-   ---|---
- `vecn` | 包含`n`个float分量的默认向量
- `bvecn`| 包含`n`个bool分量的向量
- `ivecn`| 包含`n`个int分量的向量
- `uvecn`| 包含`n`个unsigned int分量的向量
- `dvecn`| 包含`n`个double分量的向量
+  | 类型    | 含义                            |
+  | ------- | ------------------------------- |
+  | `vecn`  | 包含`n`个float分量的默认向量    |
+  | `bvecn` | 包含`n`个bool分量的向量         |
+  | `ivecn` | 包含`n`个int分量的向量          |
+  | `uvecn` | 包含`n`个unsigned int分量的向量 |
+  | `dvecn` | 包含`n`个double分量的向量       |
 
 大多数时候我们使用`vecn`，因为float足够满足大多数要求了。
 
@@ -175,13 +177,13 @@ glUniform4f(vertexColorLocation, 0.0f, greenValue, 0.0f, 1.0f);
 
 	因为OpenGL在其核心是一个C库，所以它不支持类型重载，在函数参数不同的时候就要为其定义新的函数； glUniform 是一个典型例子。这个函数有一个特定的后缀，标识设定的uniform的类型。可能的后缀有：
 
-    后缀|含义
-     ---|--
-	  `f` | 函数需要一个float作为它的值
-	  `i` | 函数需要一个int作为它的值
-	  `ui`| 函数需要一个unsigned int作为它的值
-	  `3f`| 函数需要3个float作为它的值
-	  `fv`| 函数需要一个float向量/数组作为它的值
+    | 后缀 | 含义                                 |
+    | ---- | ------------------------------------ |
+    | `f`  | 函数需要一个float作为它的值          |
+    | `i`  | 函数需要一个int作为它的值            |
+    | `ui` | 函数需要一个unsigned int作为它的值   |
+    | `3f` | 函数需要3个float作为它的值           |
+    | `fv` | 函数需要一个float向量/数组作为它的值 |
 
     每当你打算配置一个OpenGL的选项时就可以简单地根据这些规则选择适合你的数据类型的重载函数。在我们的例子里，我们希望分别设定uniform的4个float值，所以我们通过 glUniform4f 传递我们的数据(注意，我们也可以使用`fv`版本)。
 
